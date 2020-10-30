@@ -27,9 +27,11 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
         }
     }
 
-
     def read(id: String): Action[AnyContent] = Action.async { implicit request =>
-        dataRepository.read(id).map{items => Ok(Json.toJson(items))} recover{
+        dataRepository.read(id).map{
+            case Some(document) => Ok(Json.toJson(document))
+            case None => NoContent
+        } recover{
             case _: GenericDriverException => InternalServerError(Json.obj(
                 "message" -> "Error adding item to Mongo"
             ))

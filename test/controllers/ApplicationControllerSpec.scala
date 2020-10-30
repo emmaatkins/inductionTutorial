@@ -136,7 +136,7 @@ class ApplicationControllerSpec extends UnitSpec with GuiceOneAppPerSuite with M
 
 
     "id is valid" should {
-      when(mockDataRepository.read(any())).thenReturn(Future(dataModel))
+      when(mockDataRepository.read(any())).thenReturn(Future(Option(dataModel)))
       val result = TestApplicationController.read("abcd")(FakeRequest())
 
       "return the correct json" in {

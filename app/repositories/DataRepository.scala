@@ -20,7 +20,7 @@ class DataRepository @Inject()(mongo: ReactiveMongoComponent,
 
   def create(data: DataModel): Future[WriteResult] = insert(data)
 
-  def read(id: String): Future[DataModel] = find("_id" -> id) map (_.head)
+  def read(id: String): Future[Option[DataModel]] = findById(BSONObjectID(id.getBytes))
 
   def update(data: DataModel): Future[DataModel] = findAndUpdate(
     Json.obj("_id" -> data._id),
